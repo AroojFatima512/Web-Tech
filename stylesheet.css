@@ -46,7 +46,6 @@ header {
   padding: 2px;
 }
 .stickyheader {
-  position: sticky;
   top: 0;
   z-index: 1;
   width: 100%;
@@ -148,6 +147,7 @@ header {
   display: flex;
   justify-content: center;
 }
+
 .arrow-logo {
   padding: 0px 0px 35px 0px;
 }
