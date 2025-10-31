@@ -247,19 +247,19 @@ function loadReviewPage() {
   const data = JSON.parse(localStorage.getItem("orderData"));
   const list = document.getElementById("orderSummaryList");
 
-  // ✅ Fill shipping details
+  // Fill shipping details
   document.getElementById("reviewName").textContent = data.name || "N/A";
   document.getElementById("reviewAddress").textContent = data.address || "N/A";
   document.getElementById("reviewPhone").textContent = data.phone || "N/A";
 
-  // ✅ Payment details
+  // Payment details
   const paymentText =
     data.payment === "Card"
       ? `Credit / Debit Card ending in ${data.cardEnding}`
       : data.payment || "N/A";
   document.getElementById("reviewPayment").textContent = paymentText;
 
-  // ✅ Cart summary inside orderSummaryList
+  // Cart summary inside orderSummaryList
   list.innerHTML = "";
   let subtotal = 0;
 
@@ -303,11 +303,11 @@ function setupPlaceOrder() {
     event.preventDefault();
     const data = JSON.parse(localStorage.getItem("orderData"));
     if (!data || !data.cart || data.cart.length === 0) {
-      alert("❌ No items found in your order. Please go back and try again.");
+      alert(" No items found in your order. Please go back and try again.");
       return;
     }
 
-    alert("🎉 Your order has been placed successfully!");
+    alert(" Your order has been placed successfully!");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orderData");
     setTimeout(() => (window.location.href = "index.html"), 500);
