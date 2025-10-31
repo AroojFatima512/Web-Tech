@@ -1,6 +1,4 @@
-/* ===========================
-   GLOBAL UTILS
-=========================== */
+//GLOBAL UTILS
 function getCartItems() {
   return JSON.parse(localStorage.getItem("cartItems")) || [];
 }
@@ -9,9 +7,7 @@ function saveCartItems(items) {
   localStorage.setItem("cartItems", JSON.stringify(items));
 }
 
-/* ===========================
-   HEADER & FOOTER LOADING
-=========================== */
+//   HEADER & FOOTER LOADING
 document.addEventListener("DOMContentLoaded", () => {
   const loadSection = (id, file) => {
     fetch(file)
@@ -24,16 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSection("footer", "footer.html");
 });
 
-/* ===========================
-   NAVBAR TOGGLE
-=========================== */
+//   NAVBAR TOGGLE
 function shownavbar() {
   document.querySelector(".top-bar")?.classList.toggle("shownavbar");
 }
 
-/* ===========================
-   BUY NOW / CART LOGIC
-=========================== */
+//   BUY NOW / CART LOGIC
 let selectedItem = "Laptop";
 let basePrice = 300;
 let supportAdded = false;
@@ -67,9 +59,7 @@ function addToCart() {
   window.location.href = "cart.html";
 }
 
-/* ===========================
-   CART PAGE
-=========================== */
+//   CART PAGE
 function loadCartPage() {
   const items = getCartItems();
   if (!items.length) return;
@@ -78,10 +68,7 @@ function loadCartPage() {
   document.getElementById("itemName").innerText = first.name;
   document.getElementById("itemPrice").innerText = `${first.price}$`;
 }
-
-/* ===========================
-   CHECKOUT SUMMARY
-=========================== */
+//   CHECKOUT SUMMARY
 function loadCheckoutSummary() {
   const items = getCartItems();
   const list = document.getElementById("orderSummaryList");
@@ -118,7 +105,7 @@ function updateTotals(subtotal) {
   document.getElementById("tax").textContent = `$ ${tax.toFixed(2)}`;
   document.getElementById("grandTotal").textContent = `$ ${grand.toFixed(2)}`;
 }
-// ========== Event Handlers for +, −, Remove ==========
+//Event Handlers for +, −, Remove
 function attachSummaryEvents() {
   const items = getCartItems();
 
@@ -152,7 +139,7 @@ function attachSummaryEvents() {
   });
 }
 
-// ========== Handle Place Order (Address Page Validation + Continue) ==========
+//Handle Place Order (Address Page Validation + Continue)
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".needs-validation");
   const paymentBtn = document.getElementById("paymentBtn");
@@ -204,9 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ===========================
-   PAYMENT PAGE BEHAVIOR
-=========================== */
+//   PAYMENT PAGE BEHAVIOR
 function setupPaymentOptions() {
   const form = document.getElementById("paymentForm");
   if (!form) return;
@@ -240,9 +225,7 @@ function setupPaymentOptions() {
   });
 }
 
-/* ===========================
-   REVIEW PAGE LOADER (FIXED)
-=========================== */
+//   REVIEW PAGE LOADER (FIXED)
 function loadReviewPage() {
   const data = JSON.parse(localStorage.getItem("orderData"));
   const list = document.getElementById("orderSummaryList");
@@ -292,9 +275,7 @@ function loadReviewPage() {
   document.getElementById("grandTotal").textContent = `$ ${grandTotal.toFixed(2)}`;
 }
 
-/* ===========================
-   PLACE ORDER BUTTON
-=========================== */
+//   PLACE ORDER BUTTON
 function setupPlaceOrder() {
   const placeOrderBtn = document.getElementById("placeOrderBtn");
   if (!placeOrderBtn) return;
@@ -303,7 +284,7 @@ function setupPlaceOrder() {
     event.preventDefault();
     const data = JSON.parse(localStorage.getItem("orderData"));
     if (!data || !data.cart || data.cart.length === 0) {
-      alert(" No items found in your order. Please go back and try again.");
+      alert("No items found in your order. Please go back and try again.");
       return;
     }
 
@@ -314,9 +295,7 @@ function setupPlaceOrder() {
   });
 }
 
-/* ===========================
-   PAGE INITIALIZATION
-=========================== */
+//   PAGE INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("itemName")) loadCartPage();
   if (document.getElementById("paymentForm")) setupPaymentOptions();

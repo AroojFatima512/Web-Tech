@@ -422,3 +422,49 @@ footer {
   width: 35px;
   height: 35px;
 }
+/* Reveal animation */
+    .cv-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.6s ease;
+    }
+
+    .cv-section:hover .cv-content {
+      max-height: 300px;
+      opacity: 1;
+    }
+
+    /* Section heading hover effect */
+    .cv-section h2 {
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .cv-section h2:hover {
+      color: #c97d00;
+    }
+
+    /* Paragraphs and lists */
+    .cv-content p,
+    .cv-content ul {
+      margin: 0;
+      padding: 5px 0;
+    }
+
+    .cv-content ul li {
+      list-style-type: circle;
+      margin-left: 20px;
+    }
+
+    /* Link styling — now black */
+    .cv-content a {
+      color: black;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .cv-content a:hover {
+      color: #c97d00;
+      text-decoration: underline;
+    }
