@@ -125,4 +125,85 @@ $(document).ready(function () {
   $("#firstName, #lastName").on("input", function () {
     this.value = this.value.replace(/[^A-Za-z]/g, ""); // letters only
   });
+
+
+
+   // Restrict Card Name → Only letters & spaces
+    $("#cardName").on("input", function () {
+        this.value = this.value.replace(/[^A-Za-z ]/g, '');
+    });
+
+    // Restrict Card Number → Only digits, max 16
+    $("#cardNumber").on("input", function () {
+        this.value = this.value.replace(/\D/g, ''); // remove non-digits
+        if (this.value.length > 16) this.value = this.value.slice(0, 16);
+    });
+
+    // Restrict CVV → Only digits, max 3
+    $("#cvv").on("input", function () {
+        this.value = this.value.replace(/\D/g, '');
+        if (this.value.length > 3) this.value = this.value.slice(0, 3);
+    });
+
+    // Restrict Expiry → MM/YY format while typing
+    $("#expiry").on("input", function () {
+        let val = this.value.replace(/[^0-9\/]/g, ''); // allow digits and slash
+        if (val.length === 2 && !val.includes("/")) val = val + '/'; // auto-add slash
+        if (val.length > 5) val = val.slice(0, 5); // max 5 chars
+        this.value = val;
+    });
+
+    $("#paymentForm").on("submit", function (e) {
+        e.preventDefault();
+        let isValid = true;
+
+        $("input, select").removeClass("is-invalid");
+
+        // Validate Payment Method
+        if ($("#paymentMethod").val() === "") {
+            $("#paymentMethod").addClass("is-invalid");
+            isValid = false;
+        }
+
+        // If card selected → validate card fields
+        if ($("#paymentMethod").val() === "Card") {
+            let name = $("#cardName").val().trim();
+            let cardNumber = $("#cardNumber").val().trim();
+            let expiry = $("#expiry").val().trim();
+            let cvv = $("#cvv").val().trim();
+
+            if (name.length < 2) { 
+                $("#cardName").addClass("is-invalid");
+                isValid = false;
+            }
+
+            if (!/^\d{16}$/.test(cardNumber)) {
+                $("#cardNumber").addClass("is-invalid");
+                isValid = false;
+            }
+
+            // Expiry MM/YY → month 01-12, year 00-99
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
+                $("#expiry").addClass("is-invalid");
+                isValid = false;
+            }
+
+            if (!/^\d{3}$/.test(cvv)) {
+                $("#cvv").addClass("is-invalid");
+                isValid = false;
+            }
+        }
+
+        // Validate Terms
+        if (!$("#terms").is(":checked")) {
+            $("#terms").addClass("is-invalid");
+            isValid = false;
+        }
+
+        // Everything valid
+        if (isValid) {
+            alert(" Your order has been placed successfully!");
+            this.submit(); // optional, for actual submission
+        }
+    });
 });
