@@ -1,13 +1,11 @@
-// Configuration
 const API_BASE = 'https://jsonplaceholder.typicode.com';
 const POSTS_ENDPOINT = API_BASE + '/posts';
 
-let editingId = null; // null => create mode; otherwise edit mode
+let editingId = null; 
 let deleteCandidateId = null;
 let confirmModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
 
 $(function(){
-  // Initialize
   loadPosts();
 
   // Form submit (Create or Update)
@@ -25,13 +23,10 @@ $(function(){
     }
   });
 
-  // Cancel edit
   $('#cancelEditBtn').click(function(){ resetForm(); });
 
-  // Refresh
   $('#refreshBtn').click(function(){ loadPosts(); });
 
-  // Confirm delete
   $('#confirmDeleteBtn').click(function(){
     if (deleteCandidateId) {
       deletePost(deleteCandidateId);
@@ -72,7 +67,6 @@ function loadPosts() {
   $('#postsTbody').empty();
   $('#statusArea').html('');
 
-  // limit to 10 posts to keep UI light
   $.ajax({
     url: POSTS_ENDPOINT + '?_limit=10',
     method: 'GET',
@@ -151,8 +145,7 @@ function createPost(payload) {
     data: JSON.stringify(payload),
     contentType: 'application/json; charset=UTF-8',
     success(data){
-      // JSONPlaceholder returns created object with an id
-      // Append to top of list
+    
       const row = buildRow(data);
       $('#postsTbody').prepend(row);
       showToast('Post created (note: JSONPlaceholder does not persist permanently).');
@@ -174,7 +167,7 @@ function updatePost(id, payload) {
     data: JSON.stringify(payload),
     contentType: 'application/json; charset=UTF-8',
     success(data){
-      // Update row in the table
+
       const $row = $(`#postsTbody tr[data-id='${id}']`);
       if ($row.length) {
         $row.find('.title-col').text(data.title || '');
@@ -193,7 +186,7 @@ function updatePost(id, payload) {
 }
 
 function deletePost(id) {
-  // disable confirm button while performing
+
   $('#confirmDeleteBtn').prop('disabled', true).text('Deleting...');
   $.ajax({
     url: POSTS_ENDPOINT + '/' + id,
