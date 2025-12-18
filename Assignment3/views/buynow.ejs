@@ -1,0 +1,117 @@
+  <body>
+    <div class="container d-flex justify-content-center">
+      <div class="progressheader">
+        <ul
+          class="mt-4 d-flex justify-content-center list-unstyled text-center gap-5"
+        >
+          <li>
+            <span
+              class="d-inline-flex align-items-center justify-content-center border border-2 rounded-circle text-white"
+              style="
+                width: 40px;
+                height: 40px;
+                background-color: #808d2b;
+                border: 2px solid #808d2b !important;
+              "
+              >1</span
+            >
+            <div class="fw-medium mt-2">Cart</div>
+          </li>
+          <li>
+            <span
+              class="d-inline-flex align-items-center justify-content-center border border-2 rounded-circle"
+              style="
+                width: 40px;
+                height: 40px;
+                border: 2px solid #808d2b !important;
+              "
+              >2</span
+            >
+            <div class="fw-medium mt-2">Address</div>
+          </li>
+          <li>
+            <span
+              class="d-inline-flex align-items-center justify-content-center border border-2 rounded-circle"
+              style="
+                width: 40px;
+                height: 40px;
+                border: 2px solid #808d2b !important;
+              "
+              >3</span
+            >
+            <div class="fw-medium mt-2">Payment</div>
+          </li>
+          <li>
+            <span
+              class="d-inline-flex align-items-center justify-content-center border border-2 rounded-circle"
+              style="
+                width: 40px;
+                height: 40px;
+                border: 2px solid #808d2b !important;
+              "
+              >4</span
+            >
+            <div class="fw-medium mt-2">Review</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+      <div class="card border mb-3" style="max-width: 22rem">
+        <div class="card-header">
+          <div class="dropdown d-flex justify-content-between">
+            <button
+              class="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+            >
+              Select Product
+            </button>
+
+            <span id="price" class="fw-bold">$0</span>
+
+            <ul class="dropdown-menu" id="productDropdown">
+              <!-- Products will load here -->
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <ul>
+            <li>Quality checked by Envato</li>
+            <li>Future updates</li>
+            <li>6 months support from muffingroup</li>
+          </ul>
+
+          <div class="col-md-12 mb-4">
+            <input type="checkbox" id="supportCheck" onclick="updatePrice()" />
+            Extend support to 12 months
+            <span class="fw-bold">+18$</span>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button
+              type="button"
+              class="btn"
+              onclick="addToCart()"
+              style="background-color: #808d2b"
+            >
+              <i class="fa fa-shopping-cart"></i> Add To Cart
+            </button>
+          </div>
+
+          <p class="mt-3">
+            <em
+              ><small
+                >Price is in US dollars and excludes tax and handling
+                fees</small
+              ></em
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+
