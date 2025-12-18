@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => console.error(`Error loading ${prefix + file}:`, err));
   };
 
-  loadSection("header", "Assignment1/header.html");
-  loadSection("footer", "Assignment1/footer.html");
+  loadSection("header", "LabTask1/header.html");
+  loadSection("footer", "LabTask1/footer.html");
 });
 
 //   NAVBAR TOGGLE
@@ -63,7 +63,7 @@ function addToCart() {
   }
 
   saveCartItems(items);
-  window.location.href = "../Assignment2/cart.html";
+  window.location.href = "../LabTask1/cart.html";
 }
 
 //   CART PAGE
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("orderData", JSON.stringify(orderData));
 
-    window.location.href = "../Assignment2/payment.html";
+    window.location.href = "../LabTask1/payment.html";
   });
 });
 
@@ -229,7 +229,7 @@ function setupPaymentOptions() {
     }
 
     localStorage.setItem("orderData", JSON.stringify(data));
-    window.location.href = "../Assignment2/review.html";
+    window.location.href = "../LabTask1/review.html";
   });
 }
 
