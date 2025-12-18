@@ -9,15 +9,22 @@ function saveCartItems(items) {
 
 //   HEADER & FOOTER LOADING
 document.addEventListener("DOMContentLoaded", () => {
+  const path = window.location.pathname.split("/");
+
+  let prefix = "";
+  for (let i = 3; i < path.length; i++) {
+    prefix += "../";
+  }
+
   const loadSection = (id, file) => {
-    fetch(file)
+    fetch(prefix + file)
       .then(res => res.text())
       .then(html => (document.getElementById(id).innerHTML = html))
-      .catch(err => console.error(`Error loading ${file}:`, err));
+      .catch(err => console.error(`Error loading ${prefix + file}:`, err));
   };
 
- loadSection("header", "./header.html");
-  loadSection("footer", "./footer.html");
+  loadSection("header", "Assignment1/header.html");
+  loadSection("footer", "Assignment1/footer.html");
 });
 
 //   NAVBAR TOGGLE
@@ -46,7 +53,7 @@ function updatePrice() {
 function addToCart() {
   const items = getCartItems();
   const total = basePrice + (supportAdded ? 18 : 0);
-  const existing = items.find(i => i.name === selectedItem);
+  const existing = items.find((i) => i.name === selectedItem);
 
   if (existing) {
     existing.price = total;
@@ -56,7 +63,7 @@ function addToCart() {
   }
 
   saveCartItems(items);
-  window.location.href = "./cart.html";
+  window.location.href = "../Assignment2/cart.html";
 }
 
 //   CART PAGE
@@ -82,7 +89,9 @@ function loadCheckoutSummary() {
     const clone = template.content.cloneNode(true);
     clone.querySelector(".item-name").textContent = item.name;
     clone.querySelector(".item-qty").textContent = item.qty || 1;
-    clone.querySelector(".item-total").textContent = `$ ${(item.price * (item.qty || 1)).toFixed(2)}`;
+    clone.querySelector(".item-total").textContent = `$ ${(
+      item.price * (item.qty || 1)
+    ).toFixed(2)}`;
     clone.querySelector(".increase").dataset.index = i;
     clone.querySelector(".decrease").dataset.index = i;
     clone.querySelector(".remove").dataset.index = i;
@@ -109,8 +118,8 @@ function updateTotals(subtotal) {
 function attachSummaryEvents() {
   const items = getCartItems();
 
-  document.querySelectorAll(".increase").forEach(btn => {
-    btn.onclick = e => {
+  document.querySelectorAll(".increase").forEach((btn) => {
+    btn.onclick = (e) => {
       const i = e.target.dataset.index;
       items[i].qty = (items[i].qty || 1) + 1;
       saveCartItems(items);
@@ -118,8 +127,8 @@ function attachSummaryEvents() {
     };
   });
 
-  document.querySelectorAll(".decrease").forEach(btn => {
-    btn.onclick = e => {
+  document.querySelectorAll(".decrease").forEach((btn) => {
+    btn.onclick = (e) => {
       const i = e.target.dataset.index;
       if ((items[i].qty || 1) > 1) {
         items[i].qty -= 1;
@@ -129,8 +138,8 @@ function attachSummaryEvents() {
     };
   });
 
-  document.querySelectorAll(".remove").forEach(btn => {
-    btn.onclick = e => {
+  document.querySelectorAll(".remove").forEach((btn) => {
+    btn.onclick = (e) => {
       const i = e.target.dataset.index;
       items.splice(i, 1);
       saveCartItems(items);
@@ -186,7 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("orderData", JSON.stringify(orderData));
 
-    window.location.href = "./payment.html";
+    window.location.href = "../Assignment2/payment.html";
   });
 });
 
@@ -202,10 +211,10 @@ function setupPaymentOptions() {
     const cardFields = cardSection.querySelectorAll("input");
     const isCard = method.value === "Card";
     cardSection.style.display = isCard ? "block" : "none";
-    cardFields.forEach(f => (f.required = isCard));
+    cardFields.forEach((f) => (f.required = isCard));
   });
 
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!form.checkValidity()) {
       form.classList.add("was-validated");
@@ -220,7 +229,7 @@ function setupPaymentOptions() {
     }
 
     localStorage.setItem("orderData", JSON.stringify(data));
-    window.location.href = "./review.html";
+    window.location.href = "../Assignment2/review.html";
   });
 }
 
@@ -263,7 +272,7 @@ function loadReviewPage() {
   }
 
   // ====== CALCULATE TOTALS ======
-  const shipping = subtotal > 500 ? 0 : 200; 
+  const shipping = subtotal > 500 ? 0 : 200;
   const tax = subtotal * 0.05;
   const grandTotal = subtotal + shipping + tax;
 
@@ -271,7 +280,9 @@ function loadReviewPage() {
   document.getElementById("subtotal").textContent = `$ ${subtotal.toFixed(2)}`;
   document.getElementById("shipping").textContent = `$ ${shipping.toFixed(2)}`;
   document.getElementById("tax").textContent = `$ ${tax.toFixed(2)}`;
-  document.getElementById("grandTotal").textContent = `$ ${grandTotal.toFixed(2)}`;
+  document.getElementById("grandTotal").textContent = `$ ${grandTotal.toFixed(
+    2
+  )}`;
 }
 
 //   PLACE ORDER BUTTON
@@ -290,7 +301,7 @@ function setupPlaceOrder() {
     alert(" Your order has been placed successfully!");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orderData");
-    setTimeout(() => (window.location.href = "./index.html"), 500);
+    setTimeout(() => (window.location.href = "../index.html"), 500);
   });
 }
 
@@ -301,4 +312,3 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("orderSummaryList")) loadReviewPage();
   if (document.getElementById("placeOrderBtn")) setupPlaceOrder();
 });
-
