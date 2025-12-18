@@ -1,3 +1,7 @@
+let supportAdded = false;
+let selectedItem = null;
+let basePrice = 0;
+
 //GLOBAL UTILS
 function getCartItems() {
   return JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -7,57 +11,11 @@ function saveCartItems(items) {
   localStorage.setItem("cartItems", JSON.stringify(items));
 }
 
-//   HEADER & FOOTER LOADING
-document.addEventListener("DOMContentLoaded", () => {
-  const loadSection = (id, file) => {
-    fetch(file)
-      .then(res => res.text())
-      .then(html => (document.getElementById(id).innerHTML = html))
-      .catch(err => console.error(`Error loading ${file}:`, err));
-  };
-
- loadSection("header", "./header.html");
-  loadSection("footer", "./footer.html");
-});
-
 //   NAVBAR TOGGLE
 function shownavbar() {
   document.querySelector(".top-bar")?.classList.toggle("shownavbar");
 }
 
-//   BUY NOW / CART LOGIC
-let selectedItem = "Laptop";
-let basePrice = 300;
-let supportAdded = false;
-
-function selectItem(item, price) {
-  selectedItem = item;
-  basePrice = price;
-  document.getElementById("dropdownMenuButton1").innerText = item;
-  updatePrice();
-}
-
-function updatePrice() {
-  supportAdded = document.getElementById("supportCheck")?.checked || false;
-  const total = basePrice + (supportAdded ? 18 : 0);
-  document.getElementById("price").innerText = `${total}$`;
-}
-
-function addToCart() {
-  const items = getCartItems();
-  const total = basePrice + (supportAdded ? 18 : 0);
-  const existing = items.find(i => i.name === selectedItem);
-
-  if (existing) {
-    existing.price = total;
-    existing.support = supportAdded;
-  } else {
-    items.push({ name: selectedItem, price: total, support: supportAdded });
-  }
-
-  saveCartItems(items);
-  window.location.href = "./cart.html";
-}
 
 //   CART PAGE
 function loadCartPage() {
@@ -186,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("orderData", JSON.stringify(orderData));
 
-    window.location.href = "./payment.html";
+    window.location.href = "/payment";
   });
 });
 
@@ -220,7 +178,7 @@ function setupPaymentOptions() {
     }
 
     localStorage.setItem("orderData", JSON.stringify(data));
-    window.location.href = "./review.html";
+    window.location.href = "/review";
   });
 }
 
@@ -253,12 +211,12 @@ function loadReviewPage() {
       li.innerHTML = `
         <div>
           <strong>${item.name}</strong><br>
-          <small class="text-muted">Qty: ${item.quantity || 1}</small>
+          <small class="text-muted">Qty: ${item.qty || 1}</small>
         </div>
         <span>$. ${item.price}</span>
       `;
       list.appendChild(li);
-      subtotal += Number(item.price) * (item.quantity || 1);
+      subtotal += Number(item.price) * (item.qty || 1);
     });
   }
 
@@ -290,7 +248,7 @@ function setupPlaceOrder() {
     alert(" Your order has been placed successfully!");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("orderData");
-    setTimeout(() => (window.location.href = "./index.html"), 500);
+    setTimeout(() => (window.location.href = "/"), 500);
   });
 }
 
@@ -301,4 +259,77 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("orderSummaryList")) loadReviewPage();
   if (document.getElementById("placeOrderBtn")) setupPlaceOrder();
 });
+
+// ===== MongoDB BuyNow Integration =====
+const productDropdown = document.getElementById("productDropdown");
+
+if (productDropdown) {
+  fetch("/api/products")
+    .then(res => res.json())
+    .then(data => {
+      productDropdown.innerHTML = "";
+
+      data.products.forEach(p => {
+        const li = document.createElement("li");
+        li.className = "d-flex justify-content-between px-3";
+
+        li.innerHTML = `
+          <a class="dropdown-item" href="#" onclick="selectMongoProduct('${p.name}', ${p.price})">
+            ${p.name}
+          </a>
+          <span class="fw-bold">$${p.price}</span>
+        `;
+
+        productDropdown.appendChild(li);
+      });
+    });
+}
+
+// MUST be global
+function selectMongoProduct(name, price) {
+  selectedItem = name;
+  basePrice = price;
+
+  document.getElementById("dropdownMenuButton1").innerText = name;
+  updatePrice();
+}
+function updatePrice() {
+  let total = basePrice;
+
+  const supportCheck = document.getElementById("supportCheck");
+  if (supportCheck && supportCheck.checked) {
+    total += 18;
+  }
+
+  document.getElementById("price").innerText = `$${total}`;
+}
+function addToCart() {
+  if (!selectedItem) {
+    alert("Please select a product first!");
+    return;
+  }
+
+  const supportAdded = document.getElementById("supportCheck")?.checked || false;
+  const finalPrice = basePrice + (supportAdded ? 18 : 0);
+
+  const cartItems = getCartItems();
+
+  const existing = cartItems.find(
+    i => i.name === selectedItem && i.support === supportAdded
+  );
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cartItems.push({
+      name: selectedItem,
+      price: finalPrice,
+      qty: 1,
+      support: supportAdded
+    });
+  }
+
+  saveCartItems(cartItems);
+  window.location.href = "/cart";
+}
 

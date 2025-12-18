@@ -10,9 +10,10 @@
     "test": "hello"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
-    "mongoose": "^8.19.2"
+    "mongoose": "^8.20.3"
   }
 }

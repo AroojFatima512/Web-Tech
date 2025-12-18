@@ -105,7 +105,7 @@ $(document).ready(function () {
     };
 
     localStorage.setItem("orderData", JSON.stringify(orderData));
-    window.location.href = "./payment.html";
+    window.location.href = "/payment";
   });
 
   // Enable/disable payment button

@@ -10,16 +10,19 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
+
 const app = express();
 var expressLayouts = require("express-ejs-layouts");
 var ProductModel = require("./models/product.model");
 const PORT = 3000;
 
 // MongoDB connection
-mongoose.connect("mongodb://localhost:27017/electiveg3", {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 
 // Check connection
 mongoose.connection.on("connected", () => {
@@ -42,41 +45,6 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(expressLayouts); //  setup layout mechanism
-// app.get("/contact-us.html", (req, res) => {
-//   res.send("Contact Us Page");
-// });
-
-app.get("/api/products/:id", async (req, res) => {
-  const product = await ProductModel.findById(req.params.id);
-  res.send(product);
-});
-app.delete("/api/products/:id", async (req, res) => {
-  const product = await ProductModel.findByIdAndDelete(req.params.id);
-  res.send(product);
-});
-
-app.get("/api/products", async (req, res) => {
-  const products = await ProductModel.find();
-  res.send(products);
-});
-app.post("/api/products", async (req, res) => {
-  let data = req.body;
-  let record = new ProductModel(data);
-  await record.save();
-  res.send(record);
-});
-app.put("/api/products/:id", async (req, res) => {
-  let data = req.body;
-  // let record = await ProductModel.findByIdAndUpdate(req.params.id, data, {
-  //   new: true,
-  // });
-  let record = await ProductModel.findById(req.params.id);
-  record.name = data.name;
-  record.price = data.price;
-  record.description = data.description;
-  await record.save();
-  res.send(record);
-});
 
 app.get("/contactus", (req, res) => {
   res.render("contactus");
@@ -84,6 +52,12 @@ app.get("/contactus", (req, res) => {
 
 app.get("/", (req, res) => {
   res.render("homepage");
+});
+app.get("/cart", (req, res) => {
+  res.render("cart");
+});
+app.get("/checkout", (req, res) => {
+  res.render("checkout");
 });
 app.get("/api", (req, res) => {
   res.render("api");
@@ -95,6 +69,15 @@ app.get("/buynow", (req, res) => {
 app.get("/cv", (req, res) => {
   res.render("cv");
 });
+app.get("/payment", (req, res) => {
+  res.render("payment");
+});
+app.get("/review", (req, res) => {
+  res.render("review");
+});
+
+const productRoutes = require("./routes/products");
+app.use("/api/products", productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
