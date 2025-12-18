@@ -1,0 +1,18 @@
+{
+  "name": "expressapp",
+  "version": "1.0.0",
+  "description": "server side js named node",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": " ",
+  "scripts": {
+    "test": "hello"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "mongoose": "^8.19.2"
+  }
+}
