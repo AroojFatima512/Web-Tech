@@ -439,7 +439,7 @@ footer {
 }
 
 .cv-section h2:hover {
-  color: #c97d00;
+  color: #808d2b;
 }
 
 .cv-content p,
@@ -460,6 +460,6 @@ footer {
 }
 
 .cv-content a:hover {
-  color: #c97d00;
+  color: #808d2b;
   text-decoration: underline;
 }
