@@ -1,0 +1,24 @@
+<h2>Orders</h2>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Customer</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+
+  <% orders.forEach(o => { %>
+    <tr>
+      <td><%= o._id %></td>
+      <td><%= o.customerName %></td>
+      <td><%= o.totalAmount %></td>
+      <td><%= o.status %></td>
+      <td>
+        <a href="/admin/orders/confirm/<%= o._id %>">Confirm</a>
+        <a href="/admin/orders/cancel/<%= o._id %>">Cancel</a>
+      </td>
+    </tr>
+  <% }) %>
+</table>

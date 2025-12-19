@@ -78,6 +78,11 @@ app.get("/review", (req, res) => {
 
 const productRoutes = require("./routes/products");
 app.use("/api/products", productRoutes);
+const checkoutRoutes = require("./LabFinal/routes/checkout.routes");
+const adminOrderRoutes = require("./LabFinal/routes/admin.orders.routes");
+
+app.use(checkoutRoutes);
+app.use(adminOrderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
